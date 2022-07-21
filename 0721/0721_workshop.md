@@ -148,5 +148,22 @@ print(get_secret_number('happy'))
   단, 두 문자열의 아스키 숫자의 합이 같은 경우 , 둘 다 반환하세요.
 
 ```python
+def get_strong_word(a, b):
+    a_sum = 0
+    b_sum = 0
 
+    for i in range(len(a)):
+        a_sum += ord(a[i])
+
+    for i in range(len(b)):
+        b_sum += ord(b[i])
+
+    if a_sum > b_sum:
+        return a
+    elif a_sum < b_sum:
+        return b
+    else:
+        return a, b
+
+print(get_strong_word('delilah', 'dixon'))
 ```
