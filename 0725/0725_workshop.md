@@ -22,9 +22,32 @@
   def count_blood(my_lst):
       my_dict = {}
       for i in my_lst:
-          if i not in my_dict.keys():
-              my_dict.update({i:my_lst.count(i)})
+          my_dict.update({i:my_lst.count(i)})
       return my_dict #{'A': 3, 'B': 3, 'O': 3, 'AB': 3}
+  print(count_blood(['A', 'B', 'A', 'O', 'AB', 'AB', 'O', 'A', 'B', 'O', 'B', 'AB']))
+  ```
+
+- 답
+  
+  #처음에 초기값 설정해주어야한다. 
+  
+  #위 코드는 만약 A가 10명이라면 B가 몇 명인지 알 수 없다.
+  
+  ```python
+  def count_blood(my_lst):
+      my_dict = {}
+      dic = {"A" : 0, "B" : 0, "O" : 0, "AB" : 0}
+      for i in my_lst:
+          if i == "A":
+              dic["A"] += 1
+          elif i == "B":
+              dic["B"] += 1
+          elif i == "O":
+              dic["O"] += 1
+          else :
+              dic["AB"] += 1
+          my_dict.update(dic)
+      return my_dict
   print(count_blood(['A', 'B', 'A', 'O', 'AB', 'AB', 'O', 'A', 'B', 'O', 'B', 'AB']))
   ```
   

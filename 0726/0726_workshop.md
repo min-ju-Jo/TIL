@@ -15,6 +15,21 @@
   print(duplicated_letters('banana')) #['a', 'n']
   ```
 
+- 다른 방법
+  
+  ```python
+  # set 활용하기
+  def duplicated_letters(a):
+      lst = []
+      set_a = set(a)
+      for i in set_a:
+          if a.count(i) > 1 :
+              lst.append(i)
+      return lst
+  print(duplicated_letters('apple'))
+  print(duplicated_letters('banana'))
+  ```
+
 ## 2. 소대소대
 
 - 문자열을 전달 받아 해당 문자열을 소문자와 대문자가 번갈아 나타나도록 변환하여
@@ -51,7 +66,40 @@
   print(lonely([1, 1, 3, 3, 0, 1, 1])) #[1, 3, 0, 1]
   print(lonely([4, 4, 4, 3, 3])) #[4, 3]
   ```
+
+- 답
+  
+  ```python
+  def lonely(lst):
+      tmp = lst[0]
+      ans = [lst[0]]
+      for i in lst[1:]:
+          if tmp == i:
+              pass
+          else:
+              ans.append(i)
+              tmp = i
+      return ans
+  print(lonely([1, 1, 3, 3, 0, 1, 1]))
+  print(lonely([4, 4, 4, 3, 3]))
+  ```
+
+- while 활용
+  
+  ```python
+  def lonely(lst):
+      idx = 1
+      while len(lst) > idx: #처음while 1: 로 하고 나중에 바꾸기
+          if lst[idx] == lst[idx-1]:
+              lst.pop(idx)
+          else:
+              idx += 1
+          if len(lst) < idx:
+              break
+  
+      return lst
+  print(lonely([1, 1, 3, 3, 0, 1, 1]))
+  print(lonely([4, 4, 4, 3, 3]))
+  ```
   
   
-
-

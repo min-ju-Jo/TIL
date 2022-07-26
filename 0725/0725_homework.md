@@ -46,5 +46,17 @@
       return new_lst
   print(only_square_area([32, 55, 63], [13, 32, 40, 55])) #[1024, 3025]
   ```
+
+- 다른 방법
   
-  
+  ```python
+  def only_square_area(lst1, lst2):
+      lst1_set = set(lst1)
+      lst2_set = set(lst2)
+      ans_set = lst1_set & lst2_set
+      ans = []
+      for i in ans_set:
+          ans.append(i**2)
+      return ans
+  print(only_square_area([32, 55, 63], [13, 32, 40, 55]))
+  ```
