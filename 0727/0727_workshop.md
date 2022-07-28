@@ -4,8 +4,8 @@
   
   ```bash
    $ pip install faker
-   #faker 라는 패키지를 설치하기 위한 명령어
-   #git bash에서 실행
+   # faker 라는 패키지를 설치하기 위한 명령어
+   # git bash에서 실행
   ```
 
 ## 2. Basic Usages
@@ -16,8 +16,10 @@
   ```python
   from faker import Faker # 1 _____을 하기 위한 코드이다.
   # Faker 클래스를 faker 패키지에서 불러오기
+  
   fake = Faker() # 2 Faker는 _____, fake는 _____이다.
   # Faker는 클래스, fake는 Faker의 인스턴스
+  
   fake.name() # 3 name()은 fake의 _____이다.
   # 메서드
   ```
@@ -71,9 +73,9 @@
   random.random() # => 0.5765870569118247
   ```
 1. 아래의 코드를 실행 했을 때, #1과 #2에서 출력되는 결과를 각각 작성하고,
-   seed()는 어떤 종류의 메서드인지 작성하시오.
+   ``seed()``는 어떤 종류의 메서드인지 작성하시오.
    
-   - seed()는 클래스 메서드에 해당한다.
+   - ``seed()``는 클래스 메서드에 해당한다.
    
    ```python
    fake1 = Faker(’ko_KR’)
@@ -84,9 +86,9 @@
    ```
 
 2. 아래의 코드를 실행 했을 때, #1과 #2에서 출력되는 결과를 각각 작성하고,
-   seed_instance()는 어떤 종류의 메서드인지 작성하시오.
+   ``seed_instance()``는 어떤 종류의 메서드인지 작성하시오.
    
-   - seed_instance는 인스턴스 메서드에 해당한다.
+   - ``seed_instance``는 인스턴스 메서드에 해당한다.
    
    ```python
    fake1 = Faker(’ko_KR’)
