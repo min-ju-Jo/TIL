@@ -108,7 +108,7 @@ def fibo_recursion(n):
 
 ```python
 from __(a)__ import __(b)__ as __(c)__
-# (a) : fibo
-# (b) : fibo_recursion
-# (c) : recursion
+# (a) : fibo # 파일이름
+# (b) : fibo_recursion #함수이름
+# (c) : recursion # 받을 이름
 ```

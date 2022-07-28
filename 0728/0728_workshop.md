@@ -88,8 +88,8 @@ class Rectangle:
     def __init__(self, p1, p2):
         self.p1 = p1
         self.p2 = p2
-        self.width = abs(p1.x-p2.x)
-        self.height = abs(p1.y-p2.y)
+        self.width = abs(p1.x-p2.x) # 사각형의 너비 정의
+        self.height = abs(p1.y-p2.y) # 사각형의 높이 정의
     def get_area(self):
         return self.width*self.height
     def get_perimeter(self):
