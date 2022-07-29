@@ -48,6 +48,17 @@ A.
 - 코드
   
   ```python
+      base_URL = 'https://api.themoviedb.org/3/'
+      path = 'movie/popular'
+      params = { 
+          'api_key' : '72abd96085f1b006d69e19aa2de25d95',
+          'language' : 'en-US',
+          'page' : 1
+      }
+      response = requests.get(base_URL + path, params = params).json()
+  ```
+  
+  ```python
   import requests
   from pprint import pprint
   
@@ -81,7 +92,7 @@ B.
   ```python
   import requests
   from pprint import pprint
-      
+  
   def vote_average_movies():
       URL = 'https://api.themoviedb.org/3/movie/popular?api_key=72abd96085f1b006d69e19aa2de25d95&language=en-US&page=1' 
       response = requests.get(URL).json()
@@ -196,6 +207,29 @@ D.
 - 코드
   
   ```python
+      base_URL = 'https://api.themoviedb.org/3/'
+      path = 'search/movie'
+      params = { 
+          'api_key' : '72abd96085f1b006d69e19aa2de25d95',
+          'language' : 'ko-KR',
+          'page' : 1,
+          'query' : title
+      }
+      response = requests.get(base_URL + path, params = params).json()
+  ```
+  
+  ```python
+      base_URL = 'https://api.themoviedb.org/3/'
+      path = f'movie/{movie_id}/recommendations'
+      params = { 
+          'api_key' : '72abd96085f1b006d69e19aa2de25d95',
+          'language' : 'ko-KR',
+          'page' : 1
+      }
+      response = requests.get(base_URL + path, params = params).json()
+  ```
+  
+  ```python
   import re
   from unittest import result
   import requests
@@ -213,7 +247,7 @@ D.
   
       URL = f'https://api.themoviedb.org/3/movie/{movie_id}/recommendations?api_key=72abd96085f1b006d69e19aa2de25d95&language=ko-KR&page=1'
       response = requests.get(URL).json()
-      
+  
       lst=[]
       for i in response['results']:
           lst.append(i['title'])
@@ -224,7 +258,6 @@ D.
       pprint(recommendation('기생충'))
       pprint(recommendation('그래비티'))
       pprint(recommendation('검색할 수 없는 영화'))
-      
   ```
 
 E.
@@ -291,7 +324,7 @@ E.
       for i in response['crew']:
           if i['department'] == 'Directing':
               directing_list.append(i['name'])
-              
+  
       my_dict = {'cast': cast_list, 'directing' : directing_list}
       return my_dict
   
@@ -299,5 +332,3 @@ E.
       pprint(credits('기생충'))
       pprint(credits('검색할 수 없는 영화'))
   ```
-
-
