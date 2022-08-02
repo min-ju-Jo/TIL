@@ -30,7 +30,7 @@
   ```
   
   - `<td>` 만으로도 가능하다.
-  - [HTML Tag 설명 링크
+  - [HTML Tag 설명 링크](https://www.w3schools.com/tags/tag_table.asp)
 
 - 제목(Heading) 태그는 제목 이외에는 사용하지 않는 것이 좋다.(T)
   
@@ -80,7 +80,7 @@
   
   - 웹 브라우저 별로 내장 기본 스타일(user agent stylesheets)이 있습니다.
   - 그래서 Bootstrap 같은 CSS Framework는 모든 브라우저가 똑같은 출발선에서 CSS가 작성될 수 있도록 하는 reset.css 같은 초기화 css를 포함하고 있습니다.
-    - [reset.css 설명 링크](https://meyerweb.com/eric/tools/css/reset/))
+    - [reset.css 설명 링크](https://meyerweb.com/eric/tools/css/reset/)
 
 - 자식 요소 프로퍼티는 부모의 프로퍼티를 모두 상속 받는다.(F)
   
