@@ -357,7 +357,3 @@
 - 페이지네이션이 footer 에 의해 가려졌다.
   
   - mb-5 pb-3 클래스를 주면서 margin bottom과 padding bottom을 확보해주었다.
-
-#### 새로 알게된 점
-
-- container-fluid : 가로 해상도에 상관없이 100%의 width를 갖는다.
