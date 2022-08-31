@@ -10,6 +10,8 @@ python -m venv venv
 
 source venv/Scripts/activate
 
+ctrl+shipt+p -> python:select interpreter -> 추천
+
 ###### Django 설치
 
 pip install django==3.2.13
@@ -17,6 +19,8 @@ pip install django==3.2.13
 ###### 패키지 목록 생성
 
 pip freeze > requirements.txt
+
+pip install -r requirements.txt
 
 ###### 프로젝트 생성
 
@@ -39,7 +43,9 @@ python manage.py runserver
 
 확인 -> ctrl+클릭 -> 메인페이지 확인(로켓)
 
-###### Django Application 어플리케이션 생성
+###### Django Ap
+
+###### plication 어플리케이션 생성
 
 python manage.py startapp {나의 어플리케이션(articles)}
 
@@ -391,7 +397,6 @@ urlpatterns = [
     path('catch/', views.catch),
     path('hello/<str:name>/', views.hello),
 ]
-
 ```
 
 pages -> urls.py
@@ -479,5 +484,3 @@ urlpatterns = [
 - 주어진 URL 패턴 이름 및 선택적 매개 변수와 일치하는 절대 경로 주소를 반환
 
 - 템플릿에 URL을 하드 코딩하지 않고도 DRY(Don't Repeat Yourself) 원칙 위반하지 않으면서 링크 출력하는 방법
-
-
