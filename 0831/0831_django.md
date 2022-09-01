@@ -280,7 +280,7 @@ Article.objects.all()
 
 - QuerySet
   
-  - 데이터베이스에게 전달 받은 객체 목록(데이터 모음)
+  - 데이터베이스에게 전달 받은 객체 목록(데이터 모음) -> 순회가 가능한 데이터로써 1개 이상의 데이터를 불러와 사용할 수 있음
   
   - Django ORM을 통해 만들어진 자료형이며, 필터를 걸거나 정렬 등을 수행할 수 있음
   
@@ -305,6 +305,8 @@ Article.objects.all()
 - article.content = 'django!'
 
 - article.save() : 인스턴스로 save메서드 호출 -> DB에 데이터가 저장된다
+
+- 테이블의 컬럼 이름이 id 임에도 pk를 사용할 수 있는 이유는 Django가 제공하는 shortcut이기 때문
 
 <img title="" src="$(filename)_assets/2022-08-31-19-57-59-image.png" alt="" width="764">
 
@@ -378,7 +380,7 @@ Article.objects.all()
   
   - 지정된 조회 매개 변수와 일치하는 객체를 포함하는 새 QuerySet을 반환
   
-  - 없어도 빈 QuerySet으로 하나여도 QuerySet으로 반환
+  - 없어도 빈 QuerySet으로 하나여도 QuerySet으로 반환-> get과 차이점 : get은 인스턴스를 주고, filter는 쿼리셋으로 준다
   
   - pk값을 조회할 때 적합 한 Queryset API 가 아니다. pk값 조회할 때는 get으로 ( 1. QuerySet으로 반환하기 때문, 2. 없으면 오류가 나와야 하지만 없어도 빈 QueySet을 반환되기 때문)
 
@@ -428,15 +430,31 @@ Article.objects.all()
 
 base 템플릿 작성 : bootstrap CDN 및 템플릿 추가 경로 작성
 
+- 가장바깥에 templates폴더 생성, base.html 파일 생성
+
+- 프로젝트(crud) settings.py -> 'DIRS' : [BASE_DIR  / 'templates',],
+
 ![]($(filename)_assets/2022-08-31-20-23-12-image.png)
 
 ![]($(filename)_assets/2022-08-31-20-23-19-image.png)
 
 url 분리 및 연결
 
+- 앱의 url : articles/urls.py -> 앱네임 articles 지정
+
+- 프로젝트의 url : crud/urls.py -> include import해서 articles의 urls 넘긴다 -> views
+
 ![]($(filename)_assets/2022-08-31-20-23-48-image.png)
 
 index 페이지 작성
+
+- articles/urls.py -> views import
+
+- articles/urls.py -> 앱네임 articles 지정
+
+- articles/views.py -> index 함수 
+
+- articles 안 templates 폴더 내 articles폴더 -> index.html
 
 ![]($(filename)_assets/2022-08-31-20-25-40-image.png)
 
@@ -467,6 +485,12 @@ CREATE 로직을 구현하기 위해서는 몇 개의 view 함수가 필요할�
   - "create" view function
 
 New(첫 번째 함수)
+
+- articles/urls.py -> path지정 
+
+- articles/views.py -> new함수
+
+- articles 안 templates 폴더 내 articles폴더 -> new.html
 
 <img src="$(filename)_assets/2022-08-31-21-40-58-image.png" title="" alt="" width="411">
 
@@ -528,14 +552,159 @@ Create(두번째 함수)
 
 <img src="$(filename)_assets/2022-09-01-00-37-09-image.png" title="" alt="" width="514">
 
-###### 2가지 문제점 바생
+-> 바로 인덱스로 가고 싶어서 articles->views.py-> render->create 대신 index ->문제발생
+
+- 게시글 작성 후 index페이지가 출력되지만 게시글은 조회되지 않음
+  
+  - create 함수에서 index.html 문서를 렌더링할 때 context 데이터와 함께 렌더링 하지 않았기 때문
+  
+  - index 페이지 url로 다시 요청을 보내면 정상적으로 출력됨
+
+- ㅇ
+
+###### 2가지 문제점 발생
 
 1. create템플릿을 만들긴 했지만 의미가 없다 -> create를 렌더링하는 것
 
 2. GET방식 -> 데이터 노출 -> GET은 조회할 때만 사용하여야 하지만 이거 써줘라고 하는 것 -> GET의 방식이 목적에 맞지 않다 -> POST->조작
 
+###### redirect
 
+- articles/views.py -> from django.shortcuts import render, redirect (redirect import)
 
+- articles/views.py -> return redirect('articles:index')
 
+- urls -> view -> urls -> view -> template
 
+###### POST
 
+- articles/templates/articles/new.html -> method="POST", {% csrf_token %}
+
+- articles/views.py -> title = request.POST.get('title'), content = request.POST.get('content')
+
+###### READ2 (detail page)
+
+- 개별 게시글 상세 페이지 제작
+
+- 모든 게시글 마다 뷰 함수와 템플릿 파일을 만들 수 없음
+  
+  - 글의 번호(pk)를 활용해서 하나의 뷰 함수와 템플릿 파일로 대응
+
+- Variable Routing 활용
+
+urls
+
+- URL로 특정 게시글을 조회할 수 있는 번호를 받음
+
+- articles/urls.py -> path('<int:pk >/', views.detial, name='detail'),
+
+views
+
+- Article.objects.get(pk=pk)에서 오른쪽 pk는 variable routing을 통해 받은 pk, 왼쪽 pk는 DB에 저장된 레코드의 id 컬럼
+
+- articles/views.py -> detail함수
+
+templates
+
+- templates/articles/detail.html 
+
+redirect 인자 변경
+
+- articles/views.py -> create함수  return redirect('articles:index') -> return redirect('articles:detail', article.pk)
+
+###### DELETE
+
+urls
+
+- articles/urls.py -> path('<int:p k>/delete/', views.delete, name='delete'),
+
+- 모든 글을 삭제 하는 것이 아니라 삭제하고자 하는 특정 글을 조회 후 삭제해야 함
+
+views 
+
+- articles/view.py -> delete함수
+
+templates
+
+- templates/articles/detail.html 
+
+- Detail 페이지에 작성하며 DB에 영향을 미치기 때문에 POST method를 사용
+
+###### UPDATE
+
+수정은 CREATE 로직과 마찬가지로 2개의 view 함수가 필요
+
+- 사용자의 입력을 받을 페이지를 렌더링 하는 함수 1개
+  
+  - "edit" view function
+
+- 사용자가 입력한 데이터를 전송 받아 DB에 저장하는 함수 1개
+  
+  - "update" view function
+
+Edit - urls & views & templates
+
+- articles/urls.py -> path('<int:p k>/edit/', views.edit, name='edit'),
+
+- articles/views.py -> edit함수
+
+- articles/edit.html -> html 태그의 value 속성을 사용해 기존에 입력 되어 있던 데이터를 출력 ( textarea태그는 value 속성이 없으므로 태그 내부 값으로 작성해야 한다)
+
+- articles/detail.html -> Edit 페이지로 이동하기 위한 하이퍼 링크 작성
+
+Update
+
+- articles/urls.py ->  path('<int:p k>/update/', views.update, name='update'),
+
+- articles/views.py -> update함수
+
+- articles/edit.html -> form action #->
+
+#### Admin site
+
+- Django의 가장 강력한 기능 중 하나인 automatic admin interface
+
+- 관리자 페이지
+  
+  - 사용자가 아닌 서버의 관리자가 활용하기 위한 페이지
+  
+  - 모델 class를 admin.py에 등록하고 관리
+  
+  - 레코드 생성 여부 확인에 매우 유용하며 직접 레코드를 삽입할 수도 있음
+
+###### admin 계정 생성
+
+python manage.py createsuperuser
+
+- username과 password를 입력해 관리자 계정을 생성
+  
+  - email은 선택사항이기 때문에 입력하지 않고 enter를 입력하는 것이 가능
+  
+  - 비밀번호 생성 시 보안상 터미널에 입력되지 않으니 무시하고 입력을 이어가도록 함
+
+###### admin site 로그인
+
+http://127.0.0.1:8000/admin/ 로 접속 후 로그인
+
+- 계정만 만든 경우 Django 관리자 화면에서 모델 클래스는 보이지 않음
+
+###### admin에 모델 클래스 등록
+
+- 모델의 record를 보기 위해서는 admin.py에 등록 필요
+
+- articles/admin.py 
+  
+  ```python
+  from django.contrib import admin
+  from .models import Article
+  
+  admin.site.register(Article)
+  ```
+
+- 등록된 모델 클래스 확인
+
+###### 데이터 CRUD 테스트
+
+- admin 페이지에서 데이터를 조작해보기
+
+# 

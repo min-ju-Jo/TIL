@@ -484,3 +484,27 @@ urlpatterns = [
 - 주어진 URL 패턴 이름 및 선택적 매개 변수와 일치하는 절대 경로 주소를 반환
 
 - 템플릿에 URL을 하드 코딩하지 않고도 DRY(Don't Repeat Yourself) 원칙 위반하지 않으면서 링크 출력하는 방법
+
+
+
+#### Namespace
+
+###### URL namespace
+
+- Template namespace
+
+- 문제해결 1
+  
+  - articles->tempaltes\articles->index.html 등 html들
+  
+  - pages->templates\pages->index.html 
+
+- URL namespace
+
+- 문제해결 2
+  
+  - 앱네임 지정
+  
+  - 앱네임 : 네임 ->앱네임이고 네임인것으로 찾아갈꺼야
+  
+  - html에서 url 에 있는 앱네임:네임 으로 바꿔주고, views.py에서 경로  articles/index.html...
