@@ -79,7 +79,7 @@ def new(request):
   <h1>NEW</h1>
   <form action="{% url 'articles:create' %}" method="POST">
     {% csrf_token %}
-    {{ forms.as_p}}
+    {{ form.as_p}}
     <input type="submit">
   </form>
   <hr>
@@ -164,14 +164,17 @@ class ArticleForm(forms.Form):
 ```python
 # articles/forms.py
 from django import forms
-form .models import Article
+from .models import Article
 
 class ArticleForm(forms.ModelForm):
 
     class Meta:
         model = Article       # 어떤 모델을 기반으로 할지
         fields = '__all__'    # 어떤 모델 필드 중 어떤 것을 출력할지
+        #fields = ('title',)
 ```
+
+-> articles/forms.py ->widget=forms.Textarea위젯 제거-> content = forms.charField()
 
 -> runserver new 확인 -> TextField를 알아서 textarea로 바꾸어줌
 
@@ -190,7 +193,7 @@ class ArticleForm(forms.ModelForm):
 
     class Meta:
         model = Article     
-        fields = ('title',)
+        exclude = ('title',)
 ```
 
 #### modelform with view functions CRUD
@@ -342,8 +345,6 @@ class ArticleForm(form.ModelForm):
     title = 
 ```
 
-
-
 ![]($(filename)_assets/2022-09-06-17-11-48-image.png)
 
 ![]($(filename)_assets/2022-09-06-17-11-59-image.png)
@@ -354,7 +355,7 @@ class ArticleForm(form.ModelForm):
 
 - HTTP requests 처리에 따른 view함수 구조 변화
 
-- new-create, edit-update 의 view 함수 역할을 잘 살펴보면 하나의 공통점과 하느이 차이점이 있다
+- new-create, edit-update 의 view 함수 역할을 잘 살펴보면 하나의 공통점과 하나의 차이점이 있다
 
 - 공통점
   
@@ -410,7 +411,7 @@ def create(request):
 
 ![]($(filename)_assets/2022-09-06-17-37-34-image.png)
 
-- new.html -> create.html 이름 변경 및 action 속성 값 수정
+- 기존 create.html 삭제, new.html -> create.html 이름 변경 및 action 속성 값 수정
 
 ![]($(filename)_assets/2022-09-06-17-40-30-image.png)
 
@@ -494,11 +495,11 @@ def update(request, pk):
 
 - 메서드 목록
   
-  1.  require_http_methods()
+  1. require_http_methods()
   
-  2.  require_POST()
+  2. require_POST()
   
-  3.  require_safe()
+  3. require_safe()
 
 ###### require_http_methods()
 
@@ -551,5 +552,3 @@ def update(request, pk):
 - View 함수 구조 변화
   
   - HTTP requests 처리에 따른 구조 변화
-
-
