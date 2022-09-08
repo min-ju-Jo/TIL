@@ -278,6 +278,7 @@ admin.site.register(User, UserAdmin) # admin site 에 등록한다
 ###### admin 계정 만들고 시작하기
 
 - python manage.py createsuperuser
+- 확인 -> accounts_user테이블 -> accounts_user -> id 1 생성
 
 ###### AuthenticationForm
 
@@ -324,7 +325,7 @@ def login(request):
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>로그</h1>
+  <h1>로그인</h1>
   <form action="{% url 'accounts:login' %}" method="POST">
     {% csrf_token %}
     {{ form.as_p }}
@@ -333,7 +334,7 @@ def login(request):
 {% endblock content %}
 ```
 
-- 확인 -> AuthenticationForm 이 만들어졌다
+- 확인 -> /accounts/login -> AuthenticationForm 이 만들어졌다
 
 <img src="$(filename)_assets/2022-09-07-17-46-44-image.png" title="" alt="" width="378">
 
@@ -355,13 +356,13 @@ def login(request):
 
 ```python
 # accounts/views.py
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login as auth_login
 
 def login(request):
     if request.method == 'POST':
-        form = AuthenticationForm(request, request.POST)
+        form = AuthenticationForm(request, request.POST) # request를 첫번째 인자
         if form.is_valid():
             # 로그인
             auth_login(request, form.get_user()) # 유저정보 form 인스턴스 안에
@@ -421,6 +422,20 @@ def login(request):
 -> 어떻게 base 템플릿에서 context 데이터 없이 user 변수를 사용할 수 있는 걸까?
 
 -> settins.py의 context processors 설정 값 때문
+
+```python
+# templates/base.html
+...
+<body>
+  <div class="container">
+    <h3>Hello, {{ user }}</h3>
+    <a href="{% url 'accounts:login' %}">Login</a>
+    <hr>
+    {% block content %}
+    {% endblock content %}
+  </div>
+...
+```
 
 ###### context processors
 
@@ -564,7 +579,7 @@ def signup(request):
 ```
 
 ```python
-# templates/signup.html
+# accounts/templates/accounts/signup.html
 
 {% extends 'base.html' %}
 
@@ -610,7 +625,7 @@ def signup(request):
 
 def signup(request):
     if request.method == 'POST':
-        form = UserCreationFrom(request.POST)
+        form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('articles:index')
@@ -625,6 +640,7 @@ def signup(request):
 ###### 회원가입 진행 후 에러 페이지 확인
 
 - 회원가입에 사용하는 UserCreationForm이 우리가 대체한 커스텀 유저 모델이 아닌 기존 유저 모델로 인해 작성된 클래스이기 때문
+- 에러 -> AttributeError at /accounts/signup/ 
 
 <img src="$(filename)_assets/2022-09-07-19-40-56-image.png" title="" alt="" width="413">
 
@@ -667,13 +683,13 @@ def signup(request):
 
 ```python
 # accounts/forms.py
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth import get_user_model
 # from .models import User 직접참조 싫어한다
 
 class CustomUserCreationForm(UserCreationForm):
 
-    class Meta(UserCreationFrom.Meta):
+    class Meta(UserCreationForm.Meta):
         # model = User
         model = get_user_model() 
 
@@ -1110,3 +1126,35 @@ def change_password(request):
 ###### accounts view 함수에 모든 데코레이터 및 속성 값 적용해보기
 
 ![]($(filename)_assets/2022-09-08-01-04-22-image.png)
+
+## 0908
+
+next 안에 값이 들어있는 경우 -> login_required 데코레이터
+
+/article/create/
+
+들어있지 않은 경우 -> login으로 직접 들어감
+
+delete에 접근
+
+로그인 리콰이어드 만남
+
+로그인 페이지로 이동 (url : next 파라미터 존재)
+
+로그인 시도
+
+next 안에 delete 즉, delete로 이동
+
+Create 할 때 필요한 것이 뭐가 있을까?
+
+1. 입력
+   
+   - 입력할 장소가 필요해 (GET 을 통해서 form을 통해 보여준다)
+
+2. 저장
+   
+   - 입력받을 데이터가 필요해(POST 를 통해서, form을 통해서 받는다)
+   
+   - 입력받은 데이터가 유효성검사 통과했니?
+   
+   - 입력받은 데이터가 유효성검사 통과를 못했니
